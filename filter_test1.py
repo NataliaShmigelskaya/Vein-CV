@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# How to run this script:
+# 1. Without GIMP python-console.
+# Place the file filter_test1.py in a folder C:\Program Files\GIMP 2\gim\lib\gimp\2.0\plug-ins and then open GIMP. 
+# In the upper panel there will be a 'Filter' button that will allow you to apply the plugin to the image.
+
+# 2. With python-console in debugging mode.
+# Comment the register and main block. After that, put file filter_test1.py in folder 'C:\Users\.gimp-2.8\plug-ins'. 
+# Then open python-console and enter the commands: 
+# >>> import filter_test1
+# >>> image = gimp.image_list()[1] 
+# >>> filter_test1.process(image , image.active_layer)
+
 
 from gimpfu import *
 import cv2
