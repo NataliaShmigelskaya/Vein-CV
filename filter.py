@@ -66,11 +66,11 @@ def process(img, layer, mask):
     	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
     	createResultLayer(img, 'final' , pred_new)
     if mask == "2":
-	    pred = add_mask_Gaussian(imgmat)
+	pred = add_mask_Gaussian(imgmat)
     	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
     	createResultLayer(img, 'final' , pred_new)
     if mask == "3":
-	    pred = add_unsharp_mask(imgmat)
+	pred = add_unsharp_mask(imgmat)
     	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
     	createResultLayer(img, 'final' , pred_new)
 
