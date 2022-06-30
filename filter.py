@@ -13,20 +13,17 @@
 # >>> image = gimp.image_list()[0] 
 # >>> filter.process(image , image.active_layer)
 
-
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from gimpfu import *
 import cv2
 import numpy as np
 
 
-def channelData(layer):  # convert gimp image to numpy
+def channelData(layer):  
     region = layer.get_pixel_rgn(0, 0, layer.width, layer.height)
-    pixChars = region[:, :]  # Take whole layer
+    pixChars = region[:, :]  
     bpp = region.bpp
-    return np.frombuffer(pixChars, dtype = np.uint8).reshape(layer.height, layer.width, bpp)
+    f = np.frombuffer(pixChars, dtype = np.uint8).reshape(layer.height, layer.width, bpp)
+    return f
 
 
 def createResultLayer(image, name, result):
@@ -60,19 +57,15 @@ def add_unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold
 
 def process(img, layer, mask):
     imgmat = channelData(layer)
-    imgmat = imgmat[:,:,0]
     if mask == "1":
+	imgmat = cv2.cvtColor(imgmat, cv2.COLOR_BGR2GRAY )
     	pred = add_mask_CLAHE(imgmat)
-    	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
-    	createResultLayer(img, 'final' , pred_new)
+    	pred = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
     if mask == "2":
 	pred = add_mask_Gaussian(imgmat)
-    	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
-    	createResultLayer(img, 'final' , pred_new)
     if mask == "3":
 	pred = add_unsharp_mask(imgmat)
-    	pred_new = np.repeat(pred[:, :, np.newaxis], 3, axis=2)
-    	createResultLayer(img, 'final' , pred_new)
+    createResultLayer(img, 'final' , pred)
 
 
 register(
